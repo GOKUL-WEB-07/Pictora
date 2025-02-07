@@ -1,6 +1,5 @@
 import { useGetRecentPosts } from "@/lib/react-query/queriesandmutation";
 import { Loader } from "lucide-react";
- 
 import { Models } from 'Appwrite';
 import PostCard from "@/components/shared/PostCard";
 
