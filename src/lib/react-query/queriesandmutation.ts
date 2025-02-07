@@ -1,4 +1,4 @@
-import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPost, SignInAccount, signOutAccount, updatePost, updateUser } from '@/lib/Appwrite/api'
+import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUsers, likePost, savePost, searchPost, SignInAccount, signOutAccount, updatePost, updateUser } from '@/lib/Appwrite/api.ts'
 import {
     useQuery,
     useMutation,
@@ -97,10 +97,7 @@ export const useDeleteSavedPost = () => {
 
   return useMutation({
     mutationFn: (savedRecordId: string) => deleteSavedPost(savedRecordId),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey : [QUERY_KEYS.GET_POST_BY_ID, data?.$id]
-      })
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey : [QUERY_KEYS.GET_RECENT_POSTS]
       })
@@ -147,7 +144,7 @@ export const useDeletePost = () => {
 
   return useMutation({
     mutationFn: ({ postId, imageId }: { postId: string, imageId: string }) => deletePost(postId, imageId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
       })
@@ -158,16 +155,17 @@ export const useDeletePost = () => {
 export const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-    queryFn: getInfinitePosts,
-    getNextPageParam: (lastPage) => {
-      if(lastPage && lastPage.documents.length === 0) return null
+    queryFn: getInfinitePosts as any,
+    initialPageParam: null, // ✅ Required for pagination
+    getNextPageParam: (lastPage: any) => {
+      if (!lastPage || !lastPage.documents || lastPage.documents.length === 0) {
+        return null;
+      }
+      return lastPage.documents[lastPage.documents.length - 1]?.$id || null;
+    },
+  });
+};
 
-      const lastId = lastPage.documents[lastPage?.documents.length -1].$id;
-
-      return lastId;
-    }
-  })
-}
 
 export const useSearchPosts = (searchTerm: string) => {
   return useQuery({

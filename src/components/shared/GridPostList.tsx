@@ -1,4 +1,3 @@
-import React from 'react'
 import { Models } from 'Appwrite'
 import { useUserContext } from '@/context/AuthContext'
 import { Link } from 'react-router-dom'

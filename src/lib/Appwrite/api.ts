@@ -3,7 +3,6 @@ import { INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types';
 import { account, appwritConfig, avatars, databases, storage } from './config';
 import { Query } from 'Appwrite';
 import { ImageGravity  } from 'Appwrite'
-import { error } from 'console';
 
 
 
@@ -96,10 +95,13 @@ export async function getCurrentUser (){
 export async function signOutAccount(){
     try{
         const session = await account.deleteSession("current")
+
+        return session;
     }
     catch(error){
         console.log(error);
     }
+     
 }
 
 export async function createPost(post: INewPost) {

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import useDebounce from "@/hooks/useDebounce";
 import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesandmutation";
 import { Loader } from "lucide-react";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 const Explore = () => {
@@ -32,7 +32,7 @@ const Explore = () => {
 
 
   const shouldShowSearchReasults = searchValue !== '';
-  const shouldShowPosts = !shouldShowSearchReasults && posts.pages.every((item) => item.documents.length === 0)
+  const shouldShowPosts = !shouldShowSearchReasults && posts.pages.every((item) => item?.documents.length === 0)
 
   return (
     <div className="explore-container">
@@ -64,15 +64,18 @@ const Explore = () => {
 
       <div className="flex flex-wrap gap-9 w-full max-w-5xl">
         {shouldShowSearchReasults ? (
-          <SearchResults 
-          isSearchFetching={isSearchFetching}
-          searchedPosts={searchedPosts}
+          <SearchResults
+            isSearchFetching={isSearchFetching}
+            searchedPosts={searchedPosts}
+            
           />
-        ): shouldShowPosts ? (
-          <p className="text-light-4 text-center w-full">End of Posts</p>
-        ) : posts.pages.map((item, index) => (
-          <GridPostList key={`page-${index}`} posts={item.documents} />
-        ))}
+        ) : shouldShowPosts ? (
+          <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
+        ) : (
+           posts.pages.map((item, index) => 
+            item ? <GridPostList key={`page-${index}`} posts={item.documents} /> : null
+          ))
+        }
       </div>
 
       {hasNextPage && !searchValue && (

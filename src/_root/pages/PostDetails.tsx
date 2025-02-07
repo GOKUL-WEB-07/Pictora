@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetPostById } from "@/lib/react-query/queriesandmutation"
 import { formatDate } from "@/lib/utils";
-import { Dice1, Loader } from "lucide-react";
+import {  Loader } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 
 const PostDetails = () => {

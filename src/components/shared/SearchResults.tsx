@@ -1,11 +1,10 @@
-import { Models } from 'Appwrite'
 import { Loader } from 'lucide-react';
 import GridPostList from './GridPostList';
 
 
 type searchResultsProps = {
   isSearchFetching: boolean;
-  searchedPosts: Models.Document[];
+  searchedPosts: any;
 }
 
 const SearchResults = ({ isSearchFetching, searchedPosts }: searchResultsProps) => {
